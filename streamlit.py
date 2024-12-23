@@ -28,7 +28,7 @@ def domain_finder(previous_domain='.ru'):
 # Function: movie_search
 def movie_search(query,previous_domain='.ru'):
     dicto={}
-    discard_words=['gdrive','Trailer']
+    discard_words=['gdrive','Trailer','songs','drive']
     query=query.replace(" ","%20").lower()
     url=f"{domain_finder(previous_domain)}/index.php?/search/&q={query}&quick=1&search_and_or=and&search_in=titles&sortby=relevancy"
     response = requests.get(url)
