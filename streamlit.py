@@ -181,7 +181,7 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
                     file_name=os.path.basename(completed_file_path),
                     mime="video/mp4"  # Adjust MIME type based on file type
                 )
-    elif st.button("Start Over"):
+    if st.button("Start Over"):
         for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
             st.session_state[key] = None
         st.session_state.step = 1
