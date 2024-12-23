@@ -165,9 +165,26 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
         if st.session_state.torrent_handle:
             handle = st.session_state.torrent_handle
 
-            progress_placeholder = st.empty()
+            # Initialize state variables for pause/resume
+            if "is_paused" not in st.session_state:
+                st.session_state.is_paused = False
+        
+            progress_placeholder = st.empty()  # Create a placeholder for progress updates
+            pause_button = st.empty()  # Placeholder for the pause/resume button
             
             while handle.status().state != lt.torrent_status.seeding:
+                # Update pause/resume state based on button clicks
+                if st.session_state.is_paused:
+                    if pause_button.button("Resume"):
+                        st.session_state.is_paused = False
+                else:
+                    if pause_button.button("Pause"):
+                        st.session_state.is_paused = True
+                
+                if st.session_state.is_paused:
+                    progress_placeholder.info("Download paused...")  # Display pause message
+                    time.sleep(1)  # Avoid busy-waiting
+                    continue
                 s = handle.status()
                 state_str = [
                     "queued", "checking", "downloading metadata", "downloading", "finished",
@@ -181,6 +198,9 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
                 time.sleep(5)
         
             st.success("Download Complete!")
+
+            if st.button(
+    
     # Show download button if the file is completed
     if st.session_state.torrent_handle:
         handle = st.session_state.torrent_handle
