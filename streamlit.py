@@ -4,6 +4,7 @@ import libtorrent as lt
 import time
 import os
 import requests
+from lxml import html
 
 # Set up a directory for temporary storage
 temp_dir = "temp_video"
