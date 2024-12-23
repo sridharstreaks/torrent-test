@@ -163,9 +163,24 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
         start_download(st.session_state.movie_quality, temp_dir)
 
         if st.session_state.torrent_handle:
-            if st.button("Monitor Progress"):
-                monitor_download()
+            handle = st.session_state.torrent_handle
 
+            progress_placeholder = st.empty()
+            
+            while handle.status().state != lt.torrent_status.seeding:
+                s = handle.status()
+                state_str = [
+                    "queued", "checking", "downloading metadata", "downloading", "finished",
+                    "seeding", "allocating", "checking fastresume"
+                ]
+                progress_info = (
+                    f"{s.progress * 100:.2f}% complete (down: {s.download_rate / 1000:.1f} kB/s, "
+                    f"up: {s.upload_rate / 1000:.1f} kB/s, peers: {s.num_peers}) {state_str[s.state]}"
+                )
+                progress_placeholder.write(progress_info)
+                time.sleep(5)
+        
+            st.success("Download Complete!")
     # Show download button if the file is completed
     if st.session_state.torrent_handle:
         handle = st.session_state.torrent_handle
