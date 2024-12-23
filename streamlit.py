@@ -198,8 +198,6 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
                 time.sleep(5)
         
             st.success("Download Complete!")
-
-            if st.button(
     
     # Show download button if the file is completed
     if st.session_state.torrent_handle:
