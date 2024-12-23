@@ -85,7 +85,7 @@ def monitor_download():
         st.warning("No active download session. Start a new download.")
         return
 
-    progress_placeholder = st.empty()
+    #progress_placeholder = st.empty()
 
     while handle.status().state != lt.torrent_status.seeding:
         s = handle.status()
@@ -97,7 +97,7 @@ def monitor_download():
             f"{s.progress * 100:.2f}% complete (down: {s.download_rate / 1000:.1f} kB/s, "
             f"up: {s.upload_rate / 1000:.1f} kB/s, peers: {s.num_peers}) {state_str[s.state]}"
         )
-        progress_placeholder.write(progress_info)
+        st.write(progress_info)
         time.sleep(5)
 
     st.success("Download Complete!")
