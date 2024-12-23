@@ -3,6 +3,7 @@ from stqdm import stqdm
 import libtorrent as lt
 import time
 import os
+import requests
 
 # Set up a directory for temporary storage
 temp_dir = "temp_video"
@@ -98,9 +99,8 @@ st.title("Torrent Video Downloader")
 
 # Step 1: Movie Search
 query = st.text_input("Enter movie name:")
-if query.strip():
-    if st.button("Search"):
-        search_results = movie_search(query)
+if st.button("Search"):
+        search_results = movie_search(query.strip())
         selected_movie = st.pills("Select a movie:", list(search_results.keys()))
         if st.button("Confirm Selection"):
             st.session_state.selected_movie_link = search_results[selected_movie]
