@@ -126,6 +126,11 @@ elif st.session_state.step == 2 and st.session_state.dictionary:
         st.session_state.selected_movie = st.session_state.dictionary[selected_movie]
         st.session_state.step = 3
         st.rerun()
+    elif st.button("Start Over"):
+        for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
+            st.session_state[key] = None
+        st.session_state.step = 1
+        st.rerun()
 
 # Step 3: Movie Quality
 elif st.session_state.step == 3 and st.session_state.selected_movie:
@@ -136,6 +141,11 @@ elif st.session_state.step == 3 and st.session_state.selected_movie:
         st.session_state.movie_quality = st.session_state.dictionary[movie_quality]
         st.session_state.step = 4
         st.rerun()
+    elif st.button("Start Over"):
+        for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
+            st.session_state[key] = None
+        st.session_state.step = 1
+        st.rerun()
 
 # Step 3: Torrent Download
 elif st.session_state.step == 4 and st.session_state.movie_quality:
@@ -143,9 +153,9 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
     if st.button("Start Download"):
         start_download(st.session_state.movie_quality, temp_dir)
 
-    if st.session_state.torrent_handle:
-        if st.button("Monitor Progress"):
-            monitor_download()
+        if st.session_state.torrent_handle:
+            if st.button("Monitor Progress"):
+                monitor_download()
 
     # Show download button if the file is completed
     if st.session_state.torrent_handle:
@@ -162,6 +172,11 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
                     file_name=os.path.basename(completed_file_path),
                     mime="video/mp4"  # Adjust MIME type based on file type
                 )
+    elif st.button("Start Over"):
+        for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
+            st.session_state[key] = None
+        st.session_state.step = 1
+        st.rerun()
 
     # Optional cleanup button to remove temporary files
     if st.button("Clear Temporary Files"):
