@@ -163,6 +163,7 @@ elif st.session_state.step == 3 and st.session_state.selected_movie:
 # Step 3: Torrent Download
 elif st.session_state.step == 4 and st.session_state.movie_quality:
     st.warning('Please Select files within 1GB as this app\'s storage limit is max 1GB', icon="⚠️")
+    st.success('Download link fetched successfully. Press start to initiate download')
     if st.button("Start Download"):
         start_download(st.session_state.movie_quality, temp_dir)
         st.session_state.step = 5
