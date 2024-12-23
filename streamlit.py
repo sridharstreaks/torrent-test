@@ -95,28 +95,52 @@ def monitor_download():
 
     st.success("Download Complete!")
 
+# Initialize session state variables
+if "step" not in st.session_state:
+    st.session_state.step = 1
+if "dictionary" not in st.session_state:
+    st.session_state.dictionary = None
+if "selected_movie" not in st.session_state:
+    st.session_state.selected_movie = None
+if "movie_quality" not in st.session_state:
+    st.session_state.movie_quality = None
+
 # Streamlit UI
 st.title("Torrent Video Downloader")
 
 # Step 1: Movie Search
-query = st.text_input("Enter movie name:")
-if st.button("Search"):
-        search_results = movie_search(query.strip())
-        selected_movie = st.pills("Select a movie:", list(search_results.keys()))
-        if st.button("Confirm Selection"):
-            st.session_state.selected_movie_link = search_results[selected_movie]
+if st.session_state.step == 1:
+    query = st.text_input("Enter movie name:")
+    if st.button("Search"):
+            st.session_state.dictionary = movie_search(query.strip())
+            if st.session_state.dictionary:
+                st.session_state.step = 2
+                st.rerun()
+            else:
+                st.write("No results found")
 
-# Step 2: Movie Quality
-if "selected_movie_link" in st.session_state:
-    quality_results = movie_quality(st.session_state.selected_movie_link)
-    selected_quality = st.pills("Select quality:", list(quality_results.keys()))
+
+# Step 2: Present Movie Options Based on Search
+elif st.session_state.step == 2 and st.session_state.dictionary:
+    selected_movie = st.pills("Select a movie:", list(search_results.keys()))
+    if st.button("Confirm Selection"):
+        st.session_state.selected_movie = st.session_state.dictionary[selected_movie]
+        st.session_state.step = 3
+        st.rerun()
+
+# Step 3: Movie Quality
+elif st.session_state.step == 3 and st.session_state.selected_movie:
+    st.session_state.dictionary = movie_quality(st.session_state.selected_movie)
+    movie_quality = st.pills("Select quality:", list(st.session_state.dictionary.keys()))
     if st.button("Confirm Quality"):
-        st.session_state.selected_quality_link = quality_results[selected_quality]
+        st.session_state.movie_quality = st.session_state.dictionary[movie_quality]
+        st.session_state.step = 4
+        st.rerun()
 
 # Step 3: Torrent Download
-if "selected_quality_link" in st.session_state:
+elif st.session_state.step == 4 and st.session_state.movie_quality:
     if st.button("Start Download"):
-        start_download(st.session_state.selected_quality_link, temp_dir)
+        start_download(st.session_state.movie_quality, temp_dir)
 
     if st.button("Monitor Progress"):
         monitor_download()
