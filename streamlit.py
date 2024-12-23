@@ -43,7 +43,7 @@ def movie_search(query,previous_domain='.ru'):
                     range_inc+=1
             except IndexError:
                 st.error("No results Found")
-                    break
+                break
     return dicto
 
 # Function: movie_quality
@@ -57,6 +57,7 @@ def movie_quality(link):
             dicto[tree.xpath('//a[@class="skyblue-button"]//preceding-sibling::strong[2]/text()')[i]]=tree.xpath('//a[@class="skyblue-button"]/@href')[i]
         except IndexError:
             st.error("No results Found")
+            break
     return dicto
 
 # Function: movie_torrent
