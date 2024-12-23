@@ -165,6 +165,8 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
 
     if st.session_state.torrent_handle:
         monitor_download()
+        if st.button("Start Over"):
+            start_over()
 
     # Show download button if the file is completed
     if st.session_state.torrent_handle:
