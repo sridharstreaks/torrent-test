@@ -120,6 +120,7 @@ if st.session_state.step == 1:
 
 # Step 2: Present Movie Options Based on Search
 elif st.session_state.step == 2 and st.session_state.dictionary:
+    st.warning('Please Select files within 1GB as this app\'s storage limit is max 1GB', icon="⚠️")
     selected_movie = st.pills("Select a movie:", list(st.session_state.dictionary.keys()))
     if st.button("Confirm Selection"):
         st.session_state.selected_movie = st.session_state.dictionary[selected_movie]
@@ -128,6 +129,7 @@ elif st.session_state.step == 2 and st.session_state.dictionary:
 
 # Step 3: Movie Quality
 elif st.session_state.step == 3 and st.session_state.selected_movie:
+    st.warning('Please Select files within 1GB as this app\'s storage limit is max 1GB', icon="⚠️")
     st.session_state.dictionary = movie_quality(st.session_state.selected_movie)
     movie_quality = st.pills("Select quality:", list(st.session_state.dictionary.keys()))
     if st.button("Confirm Quality"):
@@ -137,6 +139,7 @@ elif st.session_state.step == 3 and st.session_state.selected_movie:
 
 # Step 3: Torrent Download
 elif st.session_state.step == 4 and st.session_state.movie_quality:
+    st.warning('Please Select files within 1GB as this app\'s storage limit is max 1GB', icon="⚠️")
     if st.button("Start Download"):
         start_download(st.session_state.movie_quality, temp_dir)
 
