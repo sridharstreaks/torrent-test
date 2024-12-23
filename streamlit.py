@@ -86,7 +86,7 @@ def monitor_download():
         return
 
     progress_placeholder = st.empty()
-    
+
     while handle.status().state != lt.torrent_status.seeding:
         s = handle.status()
         state_str = [
@@ -163,42 +163,9 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
         start_download(st.session_state.movie_quality, temp_dir)
 
         if st.session_state.torrent_handle:
-            handle = st.session_state.torrent_handle
+            if st.button("Monitor Progress"):
+                monitor_download()
 
-            # Initialize state variables for pause/resume
-            if "is_paused" not in st.session_state:
-                st.session_state.is_paused = False
-        
-            progress_placeholder = st.empty()  # Create a placeholder for progress updates
-            pause_button = st.empty()  # Placeholder for the pause/resume button
-            
-            while handle.status().state != lt.torrent_status.seeding:
-                # Update pause/resume state based on button clicks
-                if st.session_state.is_paused:
-                    if pause_button.button("Resume"):
-                        st.session_state.is_paused = False
-                else:
-                    if pause_button.button("Pause"):
-                        st.session_state.is_paused = True
-                
-                if st.session_state.is_paused:
-                    progress_placeholder.info("Download paused...")  # Display pause message
-                    time.sleep(1)  # Avoid busy-waiting
-                    continue
-                s = handle.status()
-                state_str = [
-                    "queued", "checking", "downloading metadata", "downloading", "finished",
-                    "seeding", "allocating", "checking fastresume"
-                ]
-                progress_info = (
-                    f"{s.progress * 100:.2f}% complete (down: {s.download_rate / 1000:.1f} kB/s, "
-                    f"up: {s.upload_rate / 1000:.1f} kB/s, peers: {s.num_peers}) {state_str[s.state]}"
-                )
-                progress_placeholder.write(progress_info)
-                time.sleep(5)
-        
-            st.success("Download Complete!")
-    
     # Show download button if the file is completed
     if st.session_state.torrent_handle:
         handle = st.session_state.torrent_handle
@@ -207,7 +174,7 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
             if os.path.exists(completed_file_path):
                 with open(completed_file_path, "rb") as f:
                     video_data = f.read()
-    
+
                 st.download_button(
                     label="Download Video",
                     data=video_data,
