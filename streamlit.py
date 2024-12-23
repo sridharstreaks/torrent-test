@@ -143,6 +143,22 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
     if st.button("Monitor Progress"):
         monitor_download()
 
+    # Show download button if the file is completed
+    if st.session_state.torrent_handle:
+        handle = st.session_state.torrent_handle
+        if handle.status().state == lt.torrent_status.seeding:
+            completed_file_path = os.path.join(temp_dir, handle.name())
+            if os.path.exists(completed_file_path):
+                with open(completed_file_path, "rb") as f:
+                    video_data = f.read()
+    
+                st.download_button(
+                    label="Download Video",
+                    data=video_data,
+                    file_name=os.path.basename(completed_file_path),
+                    mime="video/mp4"  # Adjust MIME type based on file type
+                )
+
     # Optional cleanup button to remove temporary files
     if st.button("Clear Temporary Files"):
         for file in os.listdir(temp_dir):
