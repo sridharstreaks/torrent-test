@@ -162,7 +162,6 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
     if st.button("Start Download"):
         start_download(st.session_state.movie_quality, temp_dir)
 
-    if st.session_state.torrent_handle:
         if st.button("Monitor Progress"):
             monitor_download()
 
