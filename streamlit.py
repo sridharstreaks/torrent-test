@@ -122,7 +122,7 @@ if st.session_state.step == 1:
 
 # Step 2: Present Movie Options Based on Search
 elif st.session_state.step == 2 and st.session_state.dictionary:
-    selected_movie = st.pills("Select a movie:", list(search_results.keys()))
+    selected_movie = st.pills("Select a movie:", list(st.session_state.dictionary.keys()))
     if st.button("Confirm Selection"):
         st.session_state.selected_movie = st.session_state.dictionary[selected_movie]
         st.session_state.step = 3
