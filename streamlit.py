@@ -84,13 +84,11 @@ def monitor_download():
         return
 
     st.write("Download Progress:")
-    progress_bar = stqdm(range(100))
-    while handle.status().state != lt.torrent_status.seeding:
+    for _ in stqdm(range(100)):  # Use stqdm directly as a progress iterator
         s = handle.status()
         progress = int(s.progress * 100)
-        for _ in progress_bar[:progress]:
-            pass
-        stqdm.write(f"{progress}% complete")
+        if progress >= 100:
+            break
         time.sleep(5)
 
     st.success("Download Complete!")
