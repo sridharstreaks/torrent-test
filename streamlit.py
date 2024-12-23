@@ -102,6 +102,13 @@ def monitor_download():
 
     st.success("Download Complete!")
 
+#start over button
+def start_over():
+    for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
+        st.session_state[key] = None
+    st.session_state.step = 1
+    st.rerun()
+
 # Initialize session state variables
 if "step" not in st.session_state:
     st.session_state.step = 1
@@ -136,11 +143,8 @@ elif st.session_state.step == 2 and st.session_state.dictionary:
         st.session_state.step = 3
         st.rerun()
     elif st.button("Start Over"):
-        for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
-            st.session_state[key] = None
-        st.session_state.step = 1
-        st.rerun()
-
+        start_over()
+        
 # Step 3: Movie Quality
 elif st.session_state.step == 3 and st.session_state.selected_movie:
     st.warning('Please Select files within 1GB as this app\'s storage limit is max 1GB', icon="⚠️")
@@ -151,10 +155,7 @@ elif st.session_state.step == 3 and st.session_state.selected_movie:
         st.session_state.step = 4
         st.rerun()
     elif st.button("Start Over"):
-        for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
-            st.session_state[key] = None
-        st.session_state.step = 1
-        st.rerun()
+        start_over()
 
 # Step 3: Torrent Download
 elif st.session_state.step == 4 and st.session_state.movie_quality:
@@ -181,10 +182,7 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
                     mime="video/mp4"  # Adjust MIME type based on file type
                 )
     if st.button("Start Over"):
-        for key in ['step', 'dictionary', 'selected_movie', 'movie_quality']:
-            st.session_state[key] = None
-        st.session_state.step = 1
-        st.rerun()
+        start_over()
 
     # Optional cleanup button to remove temporary files
     if st.button("Clear Temporary Files"):
