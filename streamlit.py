@@ -151,7 +151,7 @@ elif st.session_state.step == 4 and st.session_state.movie_quality:
     if st.session_state.torrent_handle:
         handle = st.session_state.torrent_handle
         if handle.status().state == lt.torrent_status.seeding:
-            completed_file_path = os.path.join(temp_dir, handle.name())
+            completed_file_path = os.path.join(temp_dir, handle.status().name)
             if os.path.exists(completed_file_path):
                 with open(completed_file_path, "rb") as f:
                     video_data = f.read()
