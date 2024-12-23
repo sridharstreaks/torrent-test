@@ -78,7 +78,6 @@ def start_download(magnet_link, save_path):
     st.write("Metadata Imported, Starting Download...")
 
 # Monitor download progress with stqdm
-
 def monitor_download():
     """Monitor download progress."""
     handle = st.session_state.torrent_handle
@@ -86,12 +85,19 @@ def monitor_download():
         st.warning("No active download session. Start a new download.")
         return
 
-    st.write("Download Progress:")
-    for _ in stqdm(range(100)):  # Use stqdm directly as a progress iterator
+    progress_placeholder = st.empty()
+    
+    while handle.status().state != lt.torrent_status.seeding:
         s = handle.status()
-        progress = int(s.progress * 100)
-        if progress >= 100:
-            break
+        state_str = [
+            "queued", "checking", "downloading metadata", "downloading", "finished",
+            "seeding", "allocating", "checking fastresume"
+        ]
+        progress_info = (
+            f"{s.progress * 100:.2f}% complete (down: {s.download_rate / 1000:.1f} kB/s, "
+            f"up: {s.upload_rate / 1000:.1f} kB/s, peers: {s.num_peers}) {state_str[s.state]}"
+        )
+        progress_placeholder.write(progress_info)
         time.sleep(5)
 
     st.success("Download Complete!")
