@@ -122,6 +122,11 @@ if "movie_quality" not in st.session_state:
 # Streamlit UI
 st.title("Torrent Video Downloader")
 
+
+for file in os.listdir(temp_dir):
+    os.remove(os.path.join(temp_dir, file))
+st.success("Temporary files cleared. More Space yay!!!")
+
 # Step 1: Movie Search
 if st.session_state.step == 1:
     query = st.text_input("Enter movie name:")
